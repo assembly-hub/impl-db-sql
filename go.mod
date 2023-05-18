@@ -1,4 +1,4 @@
-module github.com/assembly-hub/impl
+module github.com/assembly-hub/impl-db-sql
 
 go 1.19
 
