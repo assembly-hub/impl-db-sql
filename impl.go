@@ -16,13 +16,25 @@ func (r *row) Scan(dest ...any) error {
 	return r.r.Scan(dest...)
 }
 
+// column type func
+type columnType struct {
+}
+
 // rows func
 type rows struct {
 	rows *sql.Rows
 }
 
-func (rows *rows) ColumnTypes() ([]*sql.ColumnType, error) {
-	return rows.rows.ColumnTypes()
+func (rows *rows) ColumnTypes() ([]db.ColumnType, error) {
+	types, err := rows.rows.ColumnTypes()
+	if err != nil {
+		return nil, err
+	}
+	colType := make([]db.ColumnType, len(types))
+	for _, col := range colType {
+		colType = append(colType, col)
+	}
+	return colType, nil
 }
 
 func (rows *rows) Columns() ([]string, error) {
@@ -58,7 +70,7 @@ func (s *stmt) Close() error {
 	return s.s.Close()
 }
 
-func (s *stmt) ExecContext(ctx context.Context, args ...any) (sql.Result, error) {
+func (s *stmt) ExecContext(ctx context.Context, args ...any) (db.Result, error) {
 	return s.s.ExecContext(ctx, args...)
 }
 
@@ -90,7 +102,7 @@ func (db *sqlDB) PrepareContext(ctx context.Context, query string) (db.Stmt, err
 	return &stmt{s}, nil
 }
 
-func (db *sqlDB) ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error) {
+func (db *sqlDB) ExecContext(ctx context.Context, query string, args ...any) (db.Result, error) {
 	return db.db.ExecContext(ctx, query, args...)
 }
 
@@ -149,7 +161,7 @@ func (db *tx) PrepareContext(ctx context.Context, query string) (db.Stmt, error)
 	return &stmt{s}, nil
 }
 
-func (db *tx) ExecContext(ctx context.Context, query string, args ...any) (sql.Result, error) {
+func (db *tx) ExecContext(ctx context.Context, query string, args ...any) (db.Result, error) {
 	return db.db.ExecContext(ctx, query, args...)
 }
 
