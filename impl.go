@@ -16,10 +16,6 @@ func (r *row) Scan(dest ...any) error {
 	return r.r.Scan(dest...)
 }
 
-// column type func
-type columnType struct {
-}
-
 // rows func
 type rows struct {
 	rows *sql.Rows
