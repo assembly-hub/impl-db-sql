@@ -27,7 +27,7 @@ func (rows *rows) ColumnTypes() ([]db.ColumnType, error) {
 		return nil, err
 	}
 	colType := make([]db.ColumnType, len(types))
-	for i, col := range colType {
+	for i, col := range types {
 		colType[i] = col
 	}
 	return colType, nil
